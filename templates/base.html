@@ -63,7 +63,8 @@
                 action: "delete student",
                 student_id: studentId
             }
-            createStuff(data)
+            await createStuff(data)
+            location.reload()
             //if ok, remove row, else view error
         }
 
