@@ -65,11 +65,14 @@ def get_all_students():
     try:
         connection = sqlite3.connect('training.db')
         mycursor = connection.cursor()
-        query_result = mycursor.execute('SELECT given_name, family_name FROM python_students ORDER BY given_name')
+        query_result = mycursor.execute(
+            """SELECT student_id, given_name, family_name FROM python_students ORDER BY given_name"""
+        )
         for row in query_result.fetchall():
             dictionary_object = {
-                "given_name": row[0],
-                "family_name": row[1],
+                "student_id": row[0],
+                "given_name": row[1],
+                "family_name": row[2],
             }
             result.append(dictionary_object)
         connection.close()
@@ -83,7 +86,6 @@ def get_all_students():
 
 @app.route('/')
 def index():
-    # TODO: Create table
     return render_template('base.html', student_list=get_all_students())
 
 
@@ -118,15 +120,13 @@ def create_stuff():
 
 @app.route('/export/<export_type>', methods=["GET"])
 def export(export_type):
-    if not export_type:
-        return "Try json or csv"
     result = get_all_students()
     if export_type == "json":
         with open('students.json', "w") as file:
             dump = json.dumps(result, indent=4)
             file.write(dump)
         return jsonify(result)
-    if export_type == "csv":
+    elif export_type == "csv":
         with open('students.csv', 'w', newline='') as csvfile:
             spamwriter = csv.writer(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
             spamwriter.writerow(["First name", "Last name"])
@@ -134,3 +134,5 @@ def export(export_type):
                 spamwriter.writerow([student["given_name"], student["family_name"]])
         file = open('students.csv', 'r', newline='')
         return "<pre>" + file.read() + "</pre>"
+    else:
+        return "Try json or csv"

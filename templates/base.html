@@ -34,6 +34,9 @@
                             {% else %}
                                 <td>{{ student.family_name }}</td>
                             {% endif %}
+                            <td>
+                                <button onclick="deleteStudent({{ student.student_id }})">Delete</button>
+                            </td>
                         </tr>
                     {% endfor %}
             </table>
@@ -49,9 +52,19 @@
     <script>
         function createStudentTable() {
             const data = {
-                action: "make a table for our students"
+                action: "make a table for our students",
+
             }
             createStuff(data)
+        }
+
+        async function deleteStudent(studentId) {
+            const data = {
+                action: "delete student",
+                student_id: studentId
+            }
+            createStuff(data)
+            //if ok, remove row, else view error
         }
 
         async function insertStudents() {

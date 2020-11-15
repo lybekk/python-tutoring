@@ -28,8 +28,8 @@ list_students = [
         "given_name": "JC",
         "family_name": "Denton",
         "birth_date": "2029-03-17",
-        "notes": "Claims to be a great cook",
-        "skills": ["bending", "cooking"]
+        "notes": "Bionic man",
+        "skills": []
     },
     {
         "given_name": "Little My",
