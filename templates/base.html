@@ -13,8 +13,8 @@
             <h2>Info box</h2>
             <pre id="infoBox"></pre>
         </div>
-        <button onclick="createStudentTable()">Create student table</button>
-        <button onclick="insertStudents()">Insert student data</button>
+        <button onclick="createTables()">Create tables</button>
+        <button onclick="insertSampleData()">Insert sample data</button>
 
         <section>
             <h3>Student list</h3>
@@ -50,7 +50,7 @@
         <button onclick="dropDatabase()">Drop table/database</button> <span>Warning! This will delete all database contents</span>
     </body>
     <script>
-        function createStudentTable() {
+        function createTables() {
             const data = {
                 action: "make a table for our students",
 
@@ -65,15 +65,14 @@
             }
             await createStuff(data)
             location.reload()
-            //if ok, remove row, else view error
         }
 
-        async function insertStudents() {
+        async function insertSampleData() {
             const data = {
-                action: "insert students"
+                action: "insert sample data"
             }
             await createStuff(data)
-            showReloadButton()
+            location.reload()
         }
 
         function dropDatabase() {

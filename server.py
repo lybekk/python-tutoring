@@ -3,7 +3,9 @@ import csv
 import json
 import sqlite3
 import data.statements as sql_statement
-import data.students as students_dictionary
+import data.students as sample_data_students
+import data.courses as sample_data_courses
+import data.cities as sample_data_cities
 
 app = Flask(__name__)
 
@@ -12,6 +14,8 @@ def create_table():
     connection = sqlite3.connect('training.db')
     mycursor = connection.cursor()
     mycursor.execute(sql_statement.sqlite_create_student_table)
+    mycursor.execute(sql_statement.sqlite_create_courses_table)
+    mycursor.execute(sql_statement.sqlite_create_cities_table)
     connection.commit()
     connection.close()
 
@@ -30,7 +34,7 @@ def reset():
 def insert_students():
     try:
         list_of_students_for_sql_insert = []
-        for student in students_dictionary.list_students:
+        for student in sample_data_students.list_students:
             """
             As we have a NOT NULL Constraint on given_name and family_name
             we need to compensate for this in our application logic since
@@ -126,8 +130,10 @@ def create_stuff():
     if action == "make a table for our students":
         create_table()
         result["ok"] = True
-    elif action == "insert students":
+    elif action == "insert sample data":
         insert_response = insert_students()
+        insert_response2 = insert_cities()
+        #insert_response3 = insert_courses()
         result["ok"] = insert_response["ok"]
         if not insert_response["ok"]:
             result["ok"] = False
