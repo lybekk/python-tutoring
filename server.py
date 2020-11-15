@@ -81,6 +81,27 @@ def get_all_students():
     return result
 
 
+def delete_student(student_id):
+    print("Deleting student: ", student_id)
+    try:
+        connection = sqlite3.connect('training.db')
+        mycursor = connection.cursor()
+        sql_string = "DELETE FROM python_students WHERE student_id=?"
+        # TODO: Test what happens if student id is None or missing
+        mycursor.execute(sql_string, (student_id,))
+        connection.commit()
+        return {
+            "ok": True,
+            "message": f"Delete student {student_id} success"
+        }
+    except Exception as e:
+        print("Error deleting student: ", e)
+        return {
+            "ok": False,
+            "message": "Error deleting student: " + str(e)
+        }
+
+
 """ ROUTES """
 
 
@@ -115,6 +136,11 @@ def create_stuff():
         reset()
         result["ok"] = True
         result["message"] = "Ready to start over"
+    elif action == "delete student":
+        student_id = request_data["student_id"]
+        result_delete = delete_student(student_id)
+        result["ok"] = result_delete["ok"]
+        result["message"] = result_delete["message"]
     return jsonify(result)
 
 
