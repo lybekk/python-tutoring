@@ -1,6 +1,8 @@
 ## Project files
 training.db
 .idea/
+students.csv
+students.json
 
 ### Python ###
 # Byte-compiled / optimized / DLL files
