@@ -1,5 +1,6 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, make_response
 import csv
+import json
 import sqlite3
 import data.statements as sql_statement
 import data.students as students_dictionary
@@ -113,3 +114,23 @@ def create_stuff():
         result["ok"] = True
         result["message"] = "Ready to start over"
     return jsonify(result)
+
+
+@app.route('/export/<export_type>', methods=["GET"])
+def export(export_type):
+    if not export_type:
+        return "Try json or csv"
+    result = get_all_students()
+    if export_type == "json":
+        with open('students.json', "w") as file:
+            dump = json.dumps(result, indent=4)
+            file.write(dump)
+        return jsonify(result)
+    if export_type == "csv":
+        with open('students.csv', 'w', newline='') as csvfile:
+            spamwriter = csv.writer(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
+            spamwriter.writerow(["First name", "Last name"])
+            for student in result:
+                spamwriter.writerow([student["given_name"], student["family_name"]])
+        file = open('students.csv', 'r', newline='')
+        return "<pre>" + file.read() + "</pre>"

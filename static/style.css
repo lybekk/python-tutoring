@@ -12,10 +12,29 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
+main {
+  min-height: 100vh;
+  min-width: 35vw;
+  transition: all 0.4s ease-in-out;
+  margin: 0 auto;
+  margin-bottom: 10vh;
+}
+
 section {
     border: 1px dashed gray;
     margin: .6rem;
     padding: .8rem;
+}
+
+a {
+    margin: .8rem;
+    border: 1px solid gray;
+    padding: .4rem;
+}
+
+hr {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
 }
 
 .hidden {
@@ -29,4 +48,16 @@ section {
 
 .student-unknown {
     color: salmon;
+}
+
+@media screen and (min-width: 1216px) {
+  main {
+    max-width: 1152px;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  main {
+    max-width: 960px;
+  }
 }

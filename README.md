@@ -13,13 +13,16 @@ Install required Python packages
 ## Flask Web Server
 
 1. `cd` to this project's directory
-2. export environment variable
+2. export environment variables
     * Linux
+        * `export FLASK_ENV=development`
         * `export FLASK_APP=server.py`
     * Windows (PowerShell or Windows Terminal)
         * `$env:FLASK_APP = "server.py"`
+        * `$env:FLASK_ENV = "development"`
     * Windows (CMD)
         * `set FLASK_APP=server.py`
+        * `set FLASK_ENV=development`
 3. Run `flask run`
     * Or `python -m flask run`
     * *Some platforms may use `python3` instead*
