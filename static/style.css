@@ -1,0 +1,32 @@
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+    background-color: snow;
+    color: steelblue; /* font color */
+    font-family: sans-serif;
+    word-wrap: break-word;
+    font-kerning: normal;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+section {
+    border: 1px dashed gray;
+    margin: .6rem;
+    padding: .8rem;
+}
+
+.hidden {
+    display: none;
+}
+
+#reloadBtn {
+    color: white;
+    background-color: salmon;
+}
+
+.student-unknown {
+    color: salmon;
+}

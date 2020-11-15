@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charSet="utf-8"/>
+        <meta http-equiv="x-ua-compatible" content="ie=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    </head>
+    <body>
+        <h1>Python students</h1>
+        <button id="reloadBtn" class="hidden" onclick="location.reload();">Reload page</button>
+        <div>
+            <h2>Info box</h2>
+            <pre id="infoBox"></pre>
+        </div>
+        <button onclick="createStudentTable()">Create student table</button>
+        <button onclick="insertStudents()">Insert student data</button>
+
+        <section>
+            <h3>Student list</h3>
+            {% if student_list|length < 1 %}
+                <p>Student table is empty. Press button to insert sample data</p>
+            {% else %}
+                <table>
+                    <tr>
+                        <th>First name</th>
+                        <th>Last name</th>
+                    </tr>
+                    {% for student in student_list %}
+                        <tr>
+                            <td>{{ student.given_name }}</td>
+                            {% if student.family_name == "Unknown" %}
+                                <td class="student-unknown">{{ student.family_name }}</td>
+                            {% else %}
+                                <td>{{ student.family_name }}</td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+            </table>
+            {% endif %}
+        </section>
+        <hr/>
+
+        <button onclick="printToInfoBox('Work in progress')">Export to CSV</button>
+        <button onclick="printToInfoBox('Work in progress')">Export to JSON</button>
+        <hr/>
+        <button onclick="dropDatabase()">Drop table/database</button> <span>Warning! This will delete all database contents</span>
+    </body>
+    <script>
+        function createStudentTable() {
+            const data = {
+                action: "make a table for our students"
+            }
+            createStuff(data)
+        }
+
+        async function insertStudents() {
+            const data = {
+                action: "insert students"
+            }
+            await createStuff(data)
+            showReloadButton()
+        }
+
+        function dropDatabase() {
+            const data = {
+                action: "delete everything"
+            }
+            createStuff(data)
+        }
+
+
+        async function createStuff(data) {
+            console.log("Sending POST request to server")
+            try {
+                const url = "/create/stuff"
+                const response = await fetch(url, {
+                    method: 'POST',
+                    //mode: 'cors', // no-cors, *cors, same-origin
+                    //credentials: 'same-origin', // include, *same-origin, omit
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    //redirect: 'follow', // manual, *follow, error
+                    //referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+                    body: JSON.stringify(data) // body data type must match "Content-Type" header
+                });
+                const result = await response.json(); // parses JSON response into native JavaScript objects
+                if (result.ok) {
+                    console.log("Success", result)
+                    printToInfoBox("Success" + JSON.stringify(result))
+                } else {
+                    const txt = "That didn't work" + JSON.stringify(result);
+                    console.log(txt)
+                    printToInfoBox(txt)
+                }
+            } catch (error) {
+                //const txt = "Something went wrong" + JSON.stringify(error);
+                const txt = "Something went wrong" + error;
+                console.log(txt)
+                printToInfoBox(txt)
+            }
+        }
+
+        function printToInfoBox(text) {
+            const container = document.getElementById("infoBox");
+            container.innerText = text;
+        }
+
+        function showReloadButton() {
+            const btn = document.getElementById("reloadBtn");
+            btn.classList.remove("hidden")
+        }
+
+    </script>
+</html>
+
+<!-- TODO
++ On startup, create table
++ SQLite script for populating database
++ MySQL script for populating database
+-->
