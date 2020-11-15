@@ -27,5 +27,4 @@ Install required Python packages
     * Or `python -m flask run`
     * *Some platforms may use `python3` instead*
 
-> The web server is now available on [http://127.0.0.1:5000/](http://127.0.0.1:5000/) in the browser of your choice.
-
+> The web server is now available on [http://localhost:5000/](http://localhost:5000/) in the browser of your choice.
