@@ -17,7 +17,7 @@
         </header>
         <nav>
             <button id="reloadBtn" class="hidden" onclick="location.reload();">Reload page</button>
-            {% if table_list|length %}
+            {% if "students" in table_list %}
                 <button disabled>Tables OK</button>
             {% else %}
                 <button onclick="createTables()">Create tables</button>
@@ -39,33 +39,41 @@
                     <tr>
                         <th>First name</th>
                         <th>Last name</th>
+                        <th>City</th>
                     </tr>
                     {% for student in student_list %}
-                    <tr>
-                        <td>{{ student.given_name }}</td>
-                        {% if student.family_name == "Unknown" %}
-                        <td class="student-unknown">{{ student.family_name }}</td>
-                        {% else %}
-                        <td>{{ student.family_name }}</td>
-                        {% endif %}
-                        <td>
-                            <button class="medium">Details</button> <!-- TODO: List city and courses in details-frame -->
-                        </td>
-                        <td>
-                            <button class="error medium" onclick="deleteStudent({{ student.student_id }})">Delete</button>
-                        </td>
-                    </tr>
+                        <tr>
+                            <td class="given-name">{{ student.given_name }}</td>
+                            {% if student.family_name == "Unknown" %}
+                                <td class="student-unknown family-name">{{ student.family_name }}</td>
+                            {% else %}
+                                <td class="family-name">{{ student.family_name }}</td>
+                            {% endif %}
+                            {% if student.city == "Unknown" %}
+                                <td class="city-unknown">{{ student.city }}</td>
+                            {% else %}
+                                <td >{{ student.city }}</td>
+                            {% endif %}
+                            <!-- TODO: List city and courses in details-frame or modal
+                            <td>
+                                <button class="medium">Details</button>
+                            </td>
+                            -->
+                            <td>
+                                <button class="error medium" onclick="deleteStudent({{ student.student_id }})">Delete</button>
+                            </td>
+                        </tr>
                     {% endfor %}
                 </table>
                 {% endif %}
             </section>
             <section>
-                <h4>Tables in database</h4>
+                <h3>Tables in database</h3>
                 {% for table in table_list %}
-                <kbd>{{ table }}</kbd>
+                    <kbd style="font-size: x-large;">{{ table }}</kbd>
                 {% endfor %}
                 {% if not table_list|length %}
-                <p>No tables  in database</p>
+                    <p>No tables  in database</p>
                 {% endif %}
             </section>
         </main>
@@ -75,7 +83,7 @@
             <a href="/export/json" target="_blank">Export to JSON</a>
             <hr/>
         </footer>
-        <div id="infobox-container">
+        <div id="infobox-container" style="visibility: hidden;">
             <h2>Info box</h2>
             <pre id="infoBox"></pre>
         </div>

@@ -1,4 +1,4 @@
-list_courses = [
+sample_data_cities = [
     {
         "city_id": 1,
         "name": "Tallinn",
@@ -6,7 +6,7 @@ list_courses = [
     },
     {
         "city_id": 2,
-        "name": "Helsinki",
+        "name": "Moominvalley",
         "country": "Finland"
     },
     {
@@ -26,12 +26,17 @@ list_courses = [
     },
     {
         "city_id": 6,
-        "name": "New York",
+        "name": "New York City",
         "country": "USA"
     },
     {
         "city_id": 7,
         "name": "Rapture",
         "country": "The Atlantic Ocean"
+    },
+    {
+        "city_id": 8,
+        "name": "New New York",
+        "country": "USA"
     },
 ]

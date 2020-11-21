@@ -68,8 +68,8 @@ def drop_everything():
 def insert_sample_data(cities, students, courses):
     sql_executions = [
         ['INSERT INTO cities (city_id,name, country) VALUES (?,?,?)', cities],
-        ['INSERT INTO students (given_name,family_name) VALUES (?,?)', students],
-        ['INSERT INTO courses (course_id,topic,datetime) VALUES (?,?,?)', courses]
+        ['INSERT INTO students (given_name, family_name, location_city) VALUES (?,?,?)', students],
+        ['INSERT INTO courses (course_id, topic, datetime) VALUES (?,?,?)', courses]
     ]
     for item in sql_executions:
         commit_statement_many(item[0], item[1])
@@ -81,9 +81,12 @@ def get_all_students():
         db = connect()
         with db:
             mycursor = db.cursor()
-            mycursor.execute(
-                "SELECT student_id, given_name, family_name FROM students ORDER BY given_name"
-            )
+            mycursor.execute("""
+                SELECT students.student_id, students.given_name, students.family_name, IFNULL(cities.name, 'Unknown') AS city 
+                FROM students 
+                LEFT JOIN cities ON students.location_city=cities.city_id
+                ORDER BY students.given_name;
+            """)
             column_names = []
             for column_name in mycursor.description:
                 column_names.append(

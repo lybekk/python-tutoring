@@ -29,6 +29,18 @@ Install required Python packages
 
 > The web server is now available on [http://localhost:5000/](http://localhost:5000/) in the browser of your choice.
 
+### Using MySQL
+
+1. Create a database named `mydatabase` on your MySQL Server
+2. Create a `settings.py` file in the `mymodules` directory with the following dictionary (replacing user and password):
+
+```python
+settings = {
+    "user": "lybekk",
+    "password": "11234_4321password__PWD_PASS_WORD_p455w0rd"
+}
+```
+
 ## Jupyter Notebook
 
 ### Jupyter Web Server

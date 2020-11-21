@@ -10,7 +10,7 @@
 :root {
     --primary: steelblue;
     --on-primary: whitesmoke;
-    --secondary: darkseagreen;
+    --secondary: seagreen;
     --text-color: dimgray;
     --success: forestgreen;
     --on-success: white;
@@ -89,6 +89,12 @@ h1 {
     line-height: 1.2;
 }
 
+h3 {
+    font-weight: 300;
+    font-size: 2.5rem;
+    line-height: 1.2;
+}
+
 p {
     font-weight: 300;
     font-size: 1.2rem;
@@ -96,8 +102,10 @@ p {
 
 a {
     margin: .8rem;
-    border: 1px solid gray;
+    border: 2px solid var(--secondary);
     padding: .4rem;
+    text-decoration: none;
+    color: var(--secondary);
 }
 
 button {
@@ -156,6 +164,14 @@ hr {
     margin-bottom: 2rem;
 }
 
+th {
+    border-bottom: 2px solid var(--text-color);
+}
+
+td {
+    padding-left: .55rem;
+}
+
 /* HTML elements with id="" attribute
  *
  */
@@ -207,7 +223,33 @@ hr {
     color: salmon;
 }
 
+.city-unknown {
+    opacity: .2;
+}
+
+.family-name {
+    font-weight: 200;
+    font-size: x-large;
+    vertical-align: bottom;
+}
+
+.given-name {
+    font-weight: 400;
+    font-size: x-large;
+    vertical-align: bottom;
+}
+
 .error {
+    color: var(--on-error);
+    background-color: var(--error);
+}
+
+button.error {
+    color: var(--on-primary);
+    background-color: var(--primary);
+}
+
+button.error:hover {
     color: var(--on-error);
     background-color: var(--error);
 }

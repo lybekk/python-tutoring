@@ -1,20 +1,23 @@
-from flask import Flask, render_template, request, jsonify, make_response
+import sys
 import csv
 import json
+from flask import Flask, render_template, request, jsonify, make_response
 from data.students import sample_data_students
 from data.courses import sample_data_courses
 from data.cities import sample_data_cities
 
 """ replace with either "MySQL", "SQLite" or "SQLAlchemy" to switch database module """
-DATABASE_MODULE = "SQLite"
+DATABASE_MODULE = "MySQL"
 
 arg = DATABASE_MODULE.lower()
 if arg == "mysql":
     import mymodules.mysql_module as db
-elif arg == "SQLALchemy":
+elif arg == "sqlaLchemy":
     import mymodules.sqlalchemy_module as db
-else:
+elif arg == "sqlite":
     import mymodules.sqlite_module as db
+else:
+    sys.exit("Invalid database module in DATABASE_MODULE variable")
 
 app = Flask(__name__)
 
@@ -77,7 +80,7 @@ def insert_sample_data():
         for student in sample_data_students:
             if student["family_name"] is None:
                 student["family_name"] = "Unknown"
-            tuple_object = (student["given_name"], student["family_name"])
+            tuple_object = (student["given_name"], student["family_name"], student.get("location_city"))
             students_for_sql_insert.append(tuple_object)
 
         """ Preparing courses
@@ -119,7 +122,7 @@ def create_stuff():
         student_id = request_data["student_id"]
         result_delete = db.delete_student(student_id)
         result["ok"] = result_delete
-        result["message"] = result_delete["message"]
+        result["message"] = "Deleted student" if result_delete else "Unable to delete student"
     return jsonify(result)
 
 
