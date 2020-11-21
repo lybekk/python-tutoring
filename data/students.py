@@ -1,4 +1,4 @@
-list_students = [
+sample_data_students = [
     {
         "given_name": "Anna",
         "family_name": "DeWitt",

@@ -28,3 +28,24 @@ Install required Python packages
     * *Some platforms may use `python3` instead*
 
 > The web server is now available on [http://localhost:5000/](http://localhost:5000/) in the browser of your choice.
+
+## Jupyter Notebook
+
+### Jupyter Web Server
+* Run `jupyter notebook` from a folder containing a Jupyter notebook.
+* Visit http://localhost:8888/
+
+### Visual Studio Code
+* Select an environment, use the `Python: Select Interpreter command` from the Command Palette (Ctrl+Shift+P)
+* Create a Jupyter Notebook by running the `Python: Create Blank New Jupyter Notebook` command from the Command Palette (Ctrl+Shift+P) or create a new .ipynb file in your workspace.
+
+## Notes
+
+This project does not implement all security best practices. 
+Take necessary precautions according to your environment when deploying applications in production.
+
+* HTTPS
+* SQL Injection
+* XSS 
+
+https://flask.palletsprojects.com/en/1.1.x/security/

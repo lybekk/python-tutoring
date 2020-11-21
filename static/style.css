@@ -1,23 +1,80 @@
+/* https://developer.mozilla.org/en-US/docs/Web/CSS/box-sizing */
+*, ::after, ::before {
+    box-sizing: border-box;
+}
+
+/* CSS Variables
+ *
+ */
+
+:root {
+    --primary: steelblue;
+    --on-primary: whitesmoke;
+    --secondary: darkseagreen;
+    --text-color: dimgray;
+    --success: forestgreen;
+    --on-success: white;
+    --warning: palegoldenrod;
+    --on-warning: darkslategray;
+    --error: salmon;
+    --on-error: whitesmoke;
+    --info: dodgerblue;
+    --background: white;
+    --surface: whitesmoke;
+    --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    --card-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12);
+}
+
+html[data-theme="dark"] {
+    --background: #343a40 !important;
+    --text-color: #fff!important;
+    --font-family: Montserrat, 'Open Sans', 'Courier New', Courier, monospace, Avenir, sans-serif, Arial;
+}
+
+/* HTML Tags
+ *
+ */
+
 html {
-  scroll-behavior: smooth;
+    scroll-behavior: smooth;
+    line-height: 1.15;
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
 }
 
 body {
-    background-color: snow;
-    color: steelblue; /* font color */
-    font-family: sans-serif;
+    font-family: var(--font-family);
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    text-align: left;
+    color: var(--text-color); /* font color */
+    background-color: var(--background);
     word-wrap: break-word;
     font-kerning: normal;
     -webkit-font-smoothing: antialiased !important;
     -moz-osx-font-smoothing: grayscale;
+    margin: 0;
+}
+
+header {
+    margin: 4vw;
+}
+
+nav {
+    padding: 2vw;
 }
 
 main {
-  min-height: 100vh;
   min-width: 35vw;
   transition: all 0.4s ease-in-out;
   margin: 0 auto;
   margin-bottom: 10vh;
+}
+
+footer {
+    padding: 2vw;
+    margin-bottom: 10vh;
 }
 
 section {
@@ -26,10 +83,72 @@ section {
     padding: .8rem;
 }
 
+h1 {
+    font-weight: 300;
+    font-size: 3.5rem;
+    line-height: 1.2;
+}
+
+p {
+    font-weight: 300;
+    font-size: 1.2rem;
+}
+
 a {
     margin: .8rem;
     border: 1px solid gray;
     padding: .4rem;
+}
+
+button {
+    color: var(--on-primary);
+    background-color: var(--primary);
+    border-color: var(--primary);
+    margin-top: .25rem;
+    margin-bottom: .25rem;
+    cursor: pointer;
+    display: inline-block;
+    font-weight: 400;
+    text-align: center;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: .375rem .75rem;
+    margin: .25rem;
+    font-size: 1.25rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+    box-shadow: var(--card-shadow);
+    transition: all .4s;
+}
+
+button:hover {
+    color: var(--primary);
+    background-color: var(--on-primary);
+}
+
+button:active {
+    box-shadow: none;
+    font-size: 1.25rem;
+}
+
+button:disabled {
+    opacity: .2;
+    color: var(--primary);
+    background-color: var(--on-primary);
+    cursor: not-allowed;
+}
+
+kbd {
+    background-color: var(--text-color);
+    color: var(--surface);
+    padding: .2rem;
+    border-radius: .3rem;
+    font-weight: 600;
+    margin: .2rem;
 }
 
 hr {
@@ -37,27 +156,99 @@ hr {
     margin-bottom: 2rem;
 }
 
-.hidden {
-    display: none;
-}
+/* HTML elements with id="" attribute
+ *
+ */
 
 #reloadBtn {
     color: white;
     background-color: salmon;
 }
 
+#infobox-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    min-height: 8vh;
+    background-color: var(--surface);
+    width: 100%;
+    padding-left: 2.5vh;
+}
+
+#drop-db-button:hover:before {
+    content: "Warning! This will delete all database contents";
+    position: fixed;
+    top: 0;
+    right: 0;
+    padding: 2vw;
+    background-color: var(--warning);
+    box-shadow: var(--card-shadow);
+    margin: 2vw;
+    color: var(--on-warning);
+}
+
+/* Classes
+ *
+ */
+
+.container, .container-fluid, .container-lg, .container-md, .container-sm, .container-xl {
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.hidden {
+    display: none;
+}
+
 .student-unknown {
     color: salmon;
 }
 
-@media screen and (min-width: 1216px) {
-  main {
-    max-width: 1152px;
-  }
+.error {
+    color: var(--on-error);
+    background-color: var(--error);
 }
 
-@media screen and (min-width: 1024px) {
-  main {
-    max-width: 960px;
-  }
+.medium {
+    font-size: .9rem;
+}
+
+.medium:active {
+    font-size: .6rem;
+}
+
+/* Media queries - Screen size sensitive styling
+ * https://www.w3schools.com/css/css_rwd_mediaqueries.asp
+ */
+
+@media (min-width: 1200px) {
+    main {
+        max-width: 1152px;
+    }
+    .container, .container-lg, .container-md, .container-sm, .container-xl {
+        max-width: 1140px;
+    }
+}
+
+@media (min-width: 992px) {
+    main {
+        max-width: 960px;
+    }
+    .container, .container-lg, .container-md, .container-sm {
+        max-width: 960px;
+    }
+}
+
+@media (min-width: 768px) {
+    .container, .container-md, .container-sm {
+        max-width: 720px;
+    }
+}
+@media (min-width: 576px) {
+    .container, .container-sm {
+        max-width: 540px;
+    }
 }

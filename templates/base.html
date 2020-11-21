@@ -1,135 +1,84 @@
 <!DOCTYPE html>
-<html lang="en">
+{% if theme == "dark" %}
+    <html lang="en" data-theme="dark">
+{% else %}
+    <html lang="en">
+{% endif %}
     <head>
         <meta charSet="utf-8"/>
         <meta http-equiv="x-ua-compatible" content="ie=edge"/>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+        <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon.ico') }}"/>
         <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     </head>
     <body>
-        <h1>Python students</h1>
-        <button id="reloadBtn" class="hidden" onclick="location.reload();">Reload page</button>
-        <div>
-            <h2>Info box</h2>
-            <pre id="infoBox"></pre>
-        </div>
-        <button onclick="createTables()">Create tables</button>
-        <button onclick="insertSampleData()">Insert sample data</button>
-
-        <section>
-            <h3>Student list</h3>
-            {% if student_list|length < 1 %}
-                <p>Student table is empty. Press button to insert sample data</p>
+        <header>
+            <h1>Python students</h1>
+        </header>
+        <nav>
+            <button id="reloadBtn" class="hidden" onclick="location.reload();">Reload page</button>
+            {% if table_list|length %}
+                <button disabled>Tables OK</button>
             {% else %}
+                <button onclick="createTables()">Create tables</button>
+            {% endif %}
+            {% if student_list|length %}
+                <button disabled>Sample data OK</button>
+            {% else %}
+                <button onclick="insertSampleData()" >Insert sample data</button>
+            {% endif %}
+            <button id="drop-db-button" class="error" onclick="dropDatabase()">Drop table/database</button>
+        </nav>
+        <main>
+            <section>
+                <h3>Student list</h3>
+                {% if student_list|length < 1 %}
+                <p>Student table is empty. Press button to insert sample data</p>
+                {% else %}
                 <table>
                     <tr>
                         <th>First name</th>
                         <th>Last name</th>
                     </tr>
                     {% for student in student_list %}
-                        <tr>
-                            <td>{{ student.given_name }}</td>
-                            {% if student.family_name == "Unknown" %}
-                                <td class="student-unknown">{{ student.family_name }}</td>
-                            {% else %}
-                                <td>{{ student.family_name }}</td>
-                            {% endif %}
-                            <td>
-                                <button onclick="deleteStudent({{ student.student_id }})">Delete</button>
-                            </td>
-                        </tr>
+                    <tr>
+                        <td>{{ student.given_name }}</td>
+                        {% if student.family_name == "Unknown" %}
+                        <td class="student-unknown">{{ student.family_name }}</td>
+                        {% else %}
+                        <td>{{ student.family_name }}</td>
+                        {% endif %}
+                        <td>
+                            <button class="medium">Details</button> <!-- TODO: List city and courses in details-frame -->
+                        </td>
+                        <td>
+                            <button class="error medium" onclick="deleteStudent({{ student.student_id }})">Delete</button>
+                        </td>
+                    </tr>
                     {% endfor %}
-            </table>
-            {% endif %}
-        </section>
-        <hr/>
-
-        <a href="/export/csv" target="_blank">Export to CSV</a>
-        <a href="/export/json" target="_blank">Export to JSON</a>
-        <hr/>
-        <button onclick="dropDatabase()">Drop table/database</button> <span>Warning! This will delete all database contents</span>
+                </table>
+                {% endif %}
+            </section>
+            <section>
+                <h4>Tables in database</h4>
+                {% for table in table_list %}
+                <kbd>{{ table }}</kbd>
+                {% endfor %}
+                {% if not table_list|length %}
+                <p>No tables  in database</p>
+                {% endif %}
+            </section>
+        </main>
+        <footer>
+            <hr/>
+            <a href="/export/csv" target="_blank">Export to CSV</a>
+            <a href="/export/json" target="_blank">Export to JSON</a>
+            <hr/>
+        </footer>
+        <div id="infobox-container">
+            <h2>Info box</h2>
+            <pre id="infoBox"></pre>
+        </div>
     </body>
-    <script>
-        function createTables() {
-            const data = {
-                action: "make a table for our students",
-
-            }
-            createStuff(data)
-        }
-
-        async function deleteStudent(studentId) {
-            const data = {
-                action: "delete student",
-                student_id: studentId
-            }
-            await createStuff(data)
-            location.reload()
-        }
-
-        async function insertSampleData() {
-            const data = {
-                action: "insert sample data"
-            }
-            await createStuff(data)
-            location.reload()
-        }
-
-        function dropDatabase() {
-            const data = {
-                action: "delete everything"
-            }
-            createStuff(data)
-        }
-
-
-        async function createStuff(data) {
-            console.log("Sending POST request to server")
-            try {
-                const url = "/create/stuff"
-                const response = await fetch(url, {
-                    method: 'POST',
-                    //mode: 'cors', // no-cors, *cors, same-origin
-                    //credentials: 'same-origin', // include, *same-origin, omit
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    //redirect: 'follow', // manual, *follow, error
-                    //referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-                    body: JSON.stringify(data) // body data type must match "Content-Type" header
-                });
-                const result = await response.json(); // parses JSON response into native JavaScript objects
-                if (result.ok) {
-                    console.log("Success", result)
-                    printToInfoBox("Success" + JSON.stringify(result))
-                } else {
-                    const txt = "That didn't work" + JSON.stringify(result);
-                    console.log(txt)
-                    printToInfoBox(txt)
-                }
-            } catch (error) {
-                //const txt = "Something went wrong" + JSON.stringify(error);
-                const txt = "Something went wrong" + error;
-                console.log(txt)
-                printToInfoBox(txt)
-            }
-        }
-
-        function printToInfoBox(text) {
-            const container = document.getElementById("infoBox");
-            container.innerText = text;
-        }
-
-        function showReloadButton() {
-            const btn = document.getElementById("reloadBtn");
-            btn.classList.remove("hidden")
-        }
-
-    </script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </html>
-
-<!-- TODO
-+ On startup, create table
-+ SQLite script for populating database
-+ MySQL script for populating database
--->

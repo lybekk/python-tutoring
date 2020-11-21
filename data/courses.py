@@ -1,4 +1,4 @@
-list_courses = [
+sample_data_courses = [
     {
         "course_id": 1001,
         "topic": "Python Developer - introduction",
