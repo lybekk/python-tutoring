@@ -76,6 +76,44 @@
                     <p>No tables  in database</p>
                 {% endif %}
             </section>
+            <section>
+                <details>
+                    <summary>Students born before today's date</summary>
+                    <ul>
+                        {% for student in data_batch.students_born_before_todays_date %}
+                            <li>
+                                <p>{{ student.given_name }}
+                                    <code>{{ student.date_birth }}</code>
+                                </p>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </details>
+                <details>
+                    <summary>Students born after today's date</summary>
+                    <ul>
+                        {% for student in data_batch.students_born_after_todays_date %}
+                            <li>
+                                <p>{{ student.given_name }}
+                                    <code>{{ student.date_birth }}</code>
+                                </p>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </details>
+                <details open>
+                    <summary>Number of students in each city</summary>
+                    <table>
+                    {% for city in data_batch.count_cities %}
+                            <tr>
+                                <td>{{ city.city }}</td>
+                                <td><kbd>{{ city.count }}</kbd></td>
+                            </tr>
+                    {% endfor %}
+                    </table>
+                </details>
+            </section>
+
         </main>
         <footer>
             <hr/>

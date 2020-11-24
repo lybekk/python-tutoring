@@ -43,6 +43,7 @@ def create_table():
         "student_id"	INTEGER NOT NULL UNIQUE,
         "given_name"	TEXT NOT NULL DEFAULT 'Unknown',
         "family_name"	TEXT NOT NULL DEFAULT 'Unknown',
+        "date_birth"	TEXT,
         "location_city"	TEXT,
         "longitude"	REAL,
         "latitude"	REAL,
@@ -68,7 +69,7 @@ def drop_everything():
 def insert_sample_data(cities, students, courses):
     sql_executions = [
         ['INSERT INTO cities (city_id,name, country) VALUES (?,?,?)', cities],
-        ['INSERT INTO students (given_name, family_name, location_city) VALUES (?,?,?)', students],
+        ['INSERT INTO students (given_name, family_name, date_birth, location_city) VALUES (?,?,?,?)', students],
         ['INSERT INTO courses (course_id, topic, datetime) VALUES (?,?,?)', courses]
     ]
     for item in sql_executions:
@@ -132,3 +133,27 @@ def delete_student(student_id):
     except Exception as e:
         print(e)
         return False
+
+
+def get_data_batch():
+    data_batch = {
+        "students_born_before_todays_date": [
+            {
+                "given_name": "Not implemented for the SQLite module yet. Use MySQL.",
+                "date_birth": ""
+            }
+        ],
+        "students_born_after_todays_date": [
+            {
+                "given_name": "Not implemented for the SQLite module yet. Use MySQL.",
+                "date_birth": ""
+            }
+        ],
+        "count_cities": [
+            {
+                "city": "Not implemented for the SQLite module yet. Use MySQL for this feature.",
+                "count": ""
+            }
+        ],
+    }
+    return data_batch

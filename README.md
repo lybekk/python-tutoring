@@ -1,5 +1,13 @@
 # python-examples
-Examples for use in tutoring a python class
+Examples for use in tutoring a python class.
+
+> Demonstrates code and topics from:
+> * Flask
+> * MySQL
+> * SQLite
+> * Extract SQL and export to:
+>   * CSV
+>   * JSON
 
 ## First steps
 

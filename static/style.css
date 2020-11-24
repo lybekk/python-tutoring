@@ -93,6 +93,8 @@ h3 {
     font-weight: 300;
     font-size: 2.5rem;
     line-height: 1.2;
+    margin-top: 1.4rem;
+    margin-bottom: 1.4rem;
 }
 
 p {
@@ -170,6 +172,22 @@ th {
 
 td {
     padding-left: .55rem;
+}
+
+details {
+    padding: 15px;
+    background-color: var(--surface);
+    margin-bottom: 20px;
+    transition: all 1s;
+}
+
+details[open] {
+    padding: 30px;
+    margin-bottom: 60px;
+}
+
+summary {
+    cursor: pointer;
 }
 
 /* HTML elements with id="" attribute

@@ -2,14 +2,30 @@ import mysql.connector
 from mymodules.settings import settings
 
 
-def connect():
+def connect_fallback():
+    # TODO: this
+    """WORK IN PROGRESS"""
     connection = mysql.connector.connect(
-        host="localhost",
+        host=settings["host"],
         user=settings["user"],
         password=settings["password"],
-        database="mydatabase"
     )
-    return connection
+    mycursor = connection.cursor()
+    mycursor.execute("CREATE DATABASE mydatabase")
+    connection.commit()
+
+
+def connect():
+    try:
+        connection = mysql.connector.connect(
+            host=settings["host"],
+            user=settings["user"],
+            password=settings["password"],
+            database="mydatabase"
+        )
+        return connection
+    except Exception as e:
+        print(e)
 
 
 def commit_statement(statement, values=None):
@@ -46,10 +62,12 @@ def create_table():
         PRIMARY KEY (`city_id`),
         UNIQUE INDEX `city_id_UNIQUE` (`city_id` ASC) VISIBLE
     );
-    CREATE TABLE IF NOT EXISTS `mydatabase`.`students` (
+    """)
+    commit_statement("""CREATE TABLE IF NOT EXISTS `mydatabase`.`students` (
         `student_id` INT NOT NULL AUTO_INCREMENT,
         `given_name` VARCHAR(90) NOT NULL DEFAULT 'Unknown',
         `family_name` VARCHAR(90) NOT NULL DEFAULT 'Unknown',
+        `date_birth` DATETIME NULL,
         `location_city` INT NULL,
         `coordinates` POINT NULL,
         PRIMARY KEY (`student_id`),
@@ -61,7 +79,8 @@ def create_table():
             ON DELETE NO ACTION
             ON UPDATE NO ACTION
     );
-    CREATE TABLE `mydatabase`.`courses` (
+    """)
+    commit_statement("""CREATE TABLE `mydatabase`.`courses` (
         `course_id` INT NOT NULL,
         `topic` VARCHAR(180) NOT NULL,
         `datetime` DATETIME NOT NULL,
@@ -94,7 +113,6 @@ def get_all_students():
                 LEFT JOIN cities ON students.location_city=cities.city_id
                 ORDER BY students.given_name;
             """)
-            #"SELECT student_id, given_name, family_name, location_city FROM students ORDER BY given_name"
             data = mycursor.fetchall()
             print(data)
             return data
@@ -129,7 +147,7 @@ def drop_everything():
 def insert_sample_data(cities, students, courses):
     sql_executions = [
         ['INSERT INTO cities (city_id, name, country) VALUES (%s, %s, %s)', cities],
-        ['INSERT INTO students (given_name, family_name, location_city) VALUES (%s ,%s, %s)', students],
+        ['INSERT INTO students (given_name, family_name, date_birth,location_city) VALUES (%s, %s, %s, %s)', students],
         ['INSERT INTO courses (course_id, topic, datetime) VALUES (%s, %s, %s)', courses]
     ]
     for item in sql_executions:
@@ -145,3 +163,41 @@ def delete_student(student_id):
     except Exception as e:
         print(e)
         return False
+
+
+def simple_select(query):
+    try:
+        db = connect()
+        with db:
+            mycursor = db.cursor(dictionary=True)
+            mycursor.execute(query)
+            data = mycursor.fetchall()
+            return data
+    except Exception as e:
+        print("Error when running query: ", query, e)
+        return []
+
+
+def get_data_batch():
+    data_batch = {
+        "students_born_before_todays_date": simple_select(
+            """ SELECT given_name, DATE_FORMAT(date_birth, "%W %M %e %Y") AS date_birth 
+                FROM students 
+                WHERE date_birth <= CURDATE();
+        """),
+        "students_born_after_todays_date": simple_select(
+            """ SELECT given_name, DATE_FORMAT(date_birth, "%W %M %e %Y") AS date_birth
+                FROM students 
+                WHERE date_birth >= CURDATE();
+        """),
+        "count_cities": simple_select(
+            """ SELECT  IFNULL(cities.name, 'Unknown') AS city,
+                        COUNT(*) as count
+                FROM students 
+                LEFT JOIN cities ON students.location_city=cities.city_id
+                GROUP BY city
+                ORDER BY count DESC;
+        """),
+    }
+    print(data_batch)
+    return data_batch

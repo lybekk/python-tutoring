@@ -11,6 +11,8 @@ DATABASE_MODULE = "MySQL"
 
 arg = DATABASE_MODULE.lower()
 if arg == "mysql":
+    # TODO: Assert settings, use a settings.json instead
+    # TODO: Add steps for input of mysql user and password if the settings.py file is missing, with tips on how to add the file, with a link to the readme
     import mymodules.mysql_module as db
 elif arg == "sqlaLchemy":
     import mymodules.sqlalchemy_module as db
@@ -44,7 +46,8 @@ def index():
     context = {
         "student_list": db.get_all_students(),
         "table_list": db.get_all_tables(),
-        "theme": request.args.get('theme')
+        "theme": request.args.get('theme'),
+        "data_batch": db.get_data_batch()
     }
     return render_template('base.html', **context)
 
@@ -80,7 +83,12 @@ def insert_sample_data():
         for student in sample_data_students:
             if student["family_name"] is None:
                 student["family_name"] = "Unknown"
-            tuple_object = (student["given_name"], student["family_name"], student.get("location_city"))
+            tuple_object = (
+                student["given_name"],
+                student["family_name"],
+                student["date_birth"],
+                student.get("location_city")
+            )
             students_for_sql_insert.append(tuple_object)
 
         """ Preparing courses
