@@ -6,7 +6,7 @@ students.csv
 students.json
 /jupyter_notebooks/.vscode/settings.json
 /mymodules/settings.py
-
+config.ini
 
 ### Python ###
 # Byte-compiled / optimized / DLL files

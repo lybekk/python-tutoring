@@ -3,7 +3,7 @@ Examples for use in tutoring a python class.
 
 > Demonstrates code and topics from:
 > * Flask
-> * MySQL
+> * MySQL (or MariaDB)
 > * SQLite
 > * Extract SQL and export to:
 >   * CSV
@@ -21,33 +21,10 @@ Install required Python packages
 ## Flask Web Server
 
 1. `cd` to this project's directory
-2. export environment variables
-    * Linux
-        * `export FLASK_ENV=development`
-        * `export FLASK_APP=server.py`
-    * Windows (PowerShell or Windows Terminal)
-        * `$env:FLASK_APP = "server.py"`
-        * `$env:FLASK_ENV = "development"`
-    * Windows (CMD)
-        * `set FLASK_APP=server.py`
-        * `set FLASK_ENV=development`
-3. Run `flask run`
-    * Or `python -m flask run`
+2. Run `python server.py`
     * *Some platforms may use `python3` instead*
 
 > The web server is now available on [http://localhost:5000/](http://localhost:5000/) in the browser of your choice.
-
-### Using MySQL
-
-1. Create a database named `mydatabase` on your MySQL Server
-2. Create a `settings.py` file in the `mymodules` directory with the following dictionary (replacing user and password):
-
-```python
-settings = {
-    "user": "lybekk",
-    "password": "11234_4321password__PWD_PASS_WORD_p455w0rd"
-}
-```
 
 ## Jupyter Notebook
 
@@ -66,6 +43,6 @@ Take necessary precautions according to your environment when deploying applicat
 
 * HTTPS
 * SQL Injection
-* XSS 
+* XSS
 
-https://flask.palletsprojects.com/en/1.1.x/security/
+[Flask Docs - Security](https://flask.palletsprojects.com/en/1.1.x/security/)

@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block content %}
+<main style="visibility: hidden;">
+    <h2>404</h2>
+    <h3>Page <mark><small id="requested-url"></small></mark> not found</h3>
+    <p>Returning to somewhere familiar in
+        <kbd id="countdown"></kbd>
+    </p>
+</main>
+<script>
+    const main = document.querySelector("main");
+    const countdown = document.getElementById("countdown")
+    let timer = 7;
+
+    const timerInterval = setInterval(function() {
+        --timer;
+        countdown.innerText = timer;
+
+        if (timer == 4) {
+            countdown.classList.add("heartBeat");
+        }
+
+        if (timer == 1) {
+            ["h2","h3"].forEach(h => document.querySelector(h).classList.add("slideOutRight"));
+        }
+
+        if (timer <= 0) {
+            clearInterval(timerInterval);
+            location.assign("/")
+        }
+    }, 1000);
+
+/* An example using Web Animations API
+ * https://developer.mozilla.org/en-US/docs/Web/API/Web_Animations_API
+ */
+
+  const keyframes = [
+    {
+      filter: `blur(0.2rem)`,
+      opacity: 0,
+    },
+    {
+      filter: `blur(0rem)`,
+      opacity: 1,
+    },
+    {
+      opacity: 1,
+    },
+  ]
+
+  const options = {
+    iterations: 1,
+    iterationStart: 0,
+    delay: 200,
+    endDelay: 0,
+    duration: 2000,
+    fill: `backwards`,
+    easing: `ease-in`,
+  }
+
+  main.animate(keyframes, options);
+  main.style.visibility = "visible";
+
+console.log("{{ message }}")
+document.getElementById("requested-url").innerText = location.href;
+document.querySelector("h1").remove();
+countdown.innerText = timer;
+</script>
+
+{% endblock %}

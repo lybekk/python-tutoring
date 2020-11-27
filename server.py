@@ -1,32 +1,29 @@
-import sys
 import csv
 import json
-from flask import Flask, render_template, request, jsonify, make_response
+from flask import Flask, render_template, request, jsonify, make_response, redirect
 from data.students import sample_data_students
 from data.courses import sample_data_courses
 from data.cities import sample_data_cities
+from mymodules.config import Config
 
-""" replace with either "MySQL", "SQLite" or "SQLAlchemy" to switch database module """
-DATABASE_MODULE = "MySQL"
+from mymodules.mysql_module import DatabaseMySQL
+from mymodules.sqlite_module import DatabaseSQLite
+# from mymodules.sqlalchemy_module import DatabaseSQLAlchemy # TODO: Not implemented yet
 
-arg = DATABASE_MODULE.lower()
-if arg == "mysql":
-    # TODO: Assert settings, use a settings.json instead
-    # TODO: Add steps for input of mysql user and password if the settings.py file is missing, with tips on how to add the file, with a link to the readme
-    import mymodules.mysql_module as db
-elif arg == "sqlaLchemy":
-    import mymodules.sqlalchemy_module as db
-elif arg == "sqlite":
-    import mymodules.sqlite_module as db
-else:
-    sys.exit("Invalid database module in DATABASE_MODULE variable")
+config = Config()
+
+db = {
+    "SQLite": DatabaseSQLite(),
+    "MySQL": DatabaseMySQL(),
+    # "SQLAlchemy": DatabaseSQLAlchemy(), # TODO: Not implemented yet
+}
 
 app = Flask(__name__)
 
 
 def reset():
     try:
-        db.drop_everything()
+        db[config.db()].drop_everything()
     except Exception as e:
         print("Table does not exist: ", e)
 
@@ -43,13 +40,17 @@ def index():
         using style.css instead.
     :return:
     """
+    result = db[config.db()].connection_test()
+    if result["retry"]:
+        return render_template('authentication.html', database_module_choice=config.db())
     context = {
-        "student_list": db.get_all_students(),
-        "table_list": db.get_all_tables(),
+        "student_list": db[config.db()].get_all_students(),
+        "table_list": db[config.db()].get_all_tables(),
         "theme": request.args.get('theme'),
-        "data_batch": db.get_data_batch()
+        "data_batch": db[config.db()].get_data_batch(),
+        "database_module_choice": config.db(),
     }
-    return render_template('base.html', **context)
+    return render_template('index.html', **context)
 
 
 @app.route('/hello')
@@ -99,7 +100,7 @@ def insert_sample_data():
             courses_for_sql_insert.append(tuple_object)
 
         """ Inserts all sample data in one go """
-        db.insert_sample_data(
+        db[config.db()].insert_sample_data(
             cities_for_sql_insert,
             students_for_sql_insert,
             courses_for_sql_insert
@@ -120,7 +121,7 @@ def create_stuff():
         "action": action,
     }
     if action == "make a table for our students":
-        db.create_table()
+        db[config.db()].create_table()
         result["ok"] = True
     elif action == "delete everything":
         reset()
@@ -128,7 +129,7 @@ def create_stuff():
         result["message"] = "Ready to start over"
     elif action == "delete student":
         student_id = request_data["student_id"]
-        result_delete = db.delete_student(student_id)
+        result_delete = db[config.db()].delete_student(student_id)
         result["ok"] = result_delete
         result["message"] = "Deleted student" if result_delete else "Unable to delete student"
     return jsonify(result)
@@ -136,7 +137,7 @@ def create_stuff():
 
 @app.route('/export/<export_type>', methods=["GET"])
 def export(export_type):
-    result = db.get_all_students()
+    result = db[config.db()].get_all_students()
     if export_type == "json":
         with open('students.json', "w") as file:
             dump = json.dumps(result, indent=4)
@@ -152,3 +153,33 @@ def export(export_type):
         return "<pre>" + file.read() + "</pre>"
     else:
         return "Try json or csv"
+
+
+@app.route('/set_database_module', methods=["POST"])
+def set_database_module():
+    db_backend = request.form['db_backend']
+    print("Set database module to: ", db_backend)
+    config.set_database_module(db_backend)
+    db[config.db()].config.set_database_module(db_backend)
+    return redirect("/")
+
+
+@app.route('/set_database_credentials', methods=["POST"])
+def set_database_credentials():
+    username = request.form['username']
+    password = request.form['password']
+    db[config.db()].config.save_credentials(username, password)
+    result = db[config.db()].connection_test()
+    if result["retry"]:
+        return render_template('authentication.html', database_module_choice=config.db(), retry=result["retry"])
+    else:
+        return redirect("/")
+
+
+@app.errorhandler(404)
+def not_found(e):
+    return render_template("404.html", message=e)
+
+
+if __name__ == '__main__':
+    app.run("localhost", port=5000)

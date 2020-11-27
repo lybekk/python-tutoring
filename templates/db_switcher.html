@@ -1,0 +1,20 @@
+<div id="db-switcher">
+    <form action="/set_database_module" method="POST" style="display: grid;">
+      <label for="db_switcher">Database</label>
+      <select onchange="this.form.submit()" name="db_backend" id="db_switcher">
+        <optgroup label="SQL">
+            {% for value in ["SQLite", "MySQL"] %}
+                {% if value == database_module_choice %}
+                    <option value="{{ value }}" selected="selected">{{ value }}</option>
+                {% else %}
+                    <option value="{{ value }}">{{ value }}</option>
+                {% endif %}
+            {% endfor %}
+            <option value="SQLAlchemy" disabled>SQLAlchemy (Not implemented)</option>
+        </optgroup>
+        <optgroup label="NoSQL">
+            <option value="N/A" disabled >Not Implemented yet</option>
+        </optgroup>
+      </select>
+    </form>
+</div>

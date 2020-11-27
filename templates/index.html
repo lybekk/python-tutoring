@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<nav>
+    <button id="reloadBtn" class="hidden" onclick="location.reload();">Reload page</button>
+    {% include 'db_switcher.html' %}
+</nav>
+<main>
+    {% if table_list|length %}
+    <section>
+        <h3>Student list</h3>
+        {% if student_list|length < 1 %}
+        <p>Student table is empty.</p>
+        <button onclick="insertSampleData()" >Insert sample data</button>
+        {% else %}
+        <table>
+            <tr>
+                <th>First name</th>
+                <th>Last name</th>
+                <th>City</th>
+            </tr>
+            {% for student in student_list %}
+                <tr>
+                    <td class="given-name">{{ student.given_name }}</td>
+                    {% if student.family_name == "Unknown" %}
+                        <td class="student-unknown family-name">{{ student.family_name }}</td>
+                    {% else %}
+                        <td class="family-name">{{ student.family_name }}</td>
+                    {% endif %}
+                    {% if student.city == "Unknown" %}
+                        <td class="city-unknown">{{ student.city }}</td>
+                    {% else %}
+                        <td >{{ student.city }}</td>
+                    {% endif %}
+                    <!-- TODO: List city and courses in details-frame or modal -->
+                    <td>
+                        <button class="error medium" onclick="deleteStudent({{ student.student_id }})">Delete</button>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+        {% endif %}
+    </section>
+    {% endif %} {# End of students section. Not rendered if tables have not been created #}
+    <section>
+        <h3>Tables in database</h3>
+        {% for table in table_list %}
+            <kbd style="font-size: x-large;">{{ table }}</kbd>
+        {% endfor %}
+        {% if not table_list|length %}
+            <p>No tables  in database</p>
+            <button onclick="createTables()">Create tables</button>
+        {% endif %}
+    </section>
+    <section>
+        <details>
+            <summary>Students born before today's date</summary>
+            <ul>
+                {% for student in data_batch.students_born_before_todays_date %}
+                    <li>
+                        <p>{{ student.given_name }}
+                            <code>{{ student.date_birth }}</code>
+                        </p>
+                    </li>
+                {% endfor %}
+            </ul>
+        </details>
+        <details>
+            <summary>Students born after today's date</summary>
+            <ul>
+                {% for student in data_batch.students_born_after_todays_date %}
+                    <li>
+                        <p>{{ student.given_name }}
+                            <code>{{ student.date_birth }}</code>
+                        </p>
+                    </li>
+                {% endfor %}
+            </ul>
+        </details>
+        <details open>
+            <summary>Number of students in each city</summary>
+            <table>
+            {% for city in data_batch.count_cities %}
+                    <tr>
+                        <td>{{ city.city }}</td>
+                        <td><kbd>{{ city.count }}</kbd></td>
+                    </tr>
+            {% endfor %}
+            </table>
+        </details>
+    </section>
+</main>
+<footer>
+    <hr/>
+    <a href="/export/csv" target="_blank">Export to CSV</a>
+    <a href="/export/json" target="_blank">Export to JSON</a>
+    <hr/>
+    <button id="drop-db-button" class="error" onclick="dropDatabase()">Drop table/database</button>
+</footer>
+<div id="infobox-container" style="visibility: hidden;">
+    <h2>Info box</h2>
+    <pre id="infoBox"></pre>
+</div>
+
+{% endblock %}

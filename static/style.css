@@ -166,6 +166,46 @@ hr {
     margin-bottom: 2rem;
 }
 
+label {
+    display: inline-block;
+    margin-bottom: .5rem;
+    vertical-align: sub;
+    margin-left: .4rem;
+}
+
+input {
+    display: block;
+    width: 90%;
+    height: calc(1.5em + .75rem + 2px);
+    margin-bottom: 1rem;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+}
+
+select {
+    height: calc(1.5em + .75rem + 2px);
+    padding: .375rem 1.75rem .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--surface);
+    vertical-align: middle;
+    background-color: var(--primary);
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+}
+
+option:disabled {
+    color: darkgray;
+}
+
 th {
     border-bottom: 2px solid var(--text-color);
 }
@@ -188,6 +228,15 @@ details[open] {
 
 summary {
     cursor: pointer;
+}
+
+blockquote {
+    margin-bottom: 1.8rem;
+    padding: .1rem 2rem;
+    display: inline-block;
+    box-shadow: var(--card-shadow);
+    border-bottom-left-radius: 2rem;
+    border-top-right-radius: 2rem;
 }
 
 /* HTML elements with id="" attribute
@@ -219,6 +268,18 @@ summary {
     box-shadow: var(--card-shadow);
     margin: 2vw;
     color: var(--on-warning);
+}
+
+#db-switcher {
+    display: inline-flex;
+    background-color: var(--surface);
+    padding: .4rem;
+    vertical-align: middle;
+    box-shadow: var(--card-shadow);
+}
+
+#countdown {
+    position: absolute;
 }
 
 /* Classes
@@ -262,6 +323,11 @@ summary {
     background-color: var(--error);
 }
 
+.info {
+    color: var(--on-primary);
+    background-color: var(--info);
+}
+
 button.error {
     color: var(--on-primary);
     background-color: var(--primary);
@@ -270,6 +336,16 @@ button.error {
 button.error:hover {
     color: var(--on-error);
     background-color: var(--error);
+}
+
+button.secondary {
+    color: var(--on-primary);
+    background-color: var(--secondary);
+}
+
+button.secondary:hover {
+    color: var(--secondary);
+    background-color: var(--on-primary);
 }
 
 .medium {
@@ -311,4 +387,50 @@ button.error:hover {
     .container, .container-sm {
         max-width: 540px;
     }
+}
+
+/*
+ * Animations
+ */
+
+@keyframes slideOutRight {
+    from {
+        transform: translateX(0%);
+        opacity: 1
+    }
+    to {
+        transform: translateX(25%);
+        opacity: 0
+    }
+}
+
+.slideOutRight {
+    animation-name: slideOutRight;
+    animation-duration: 0.8s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-out;
+}
+
+@keyframes heartBeat {
+    0% {
+        transform: scale(1);
+    }
+    75% {
+        transform: scale(1);
+    }
+    85% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.heartBeat {
+    animation-name: heartBeat;
+    animation-duration: 1s;
+    animation-delay: 0.2s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease;
 }

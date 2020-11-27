@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<main>
+    <h2>Authentication</h2>
+    <blockquote class="{{ 'error' if retry else 'info' }}">
+        {% if retry %}
+            <h3>Hmm..</h3>
+            <p>Credentials did not work. Give it another shot!</p>
+        {% else %}
+        <p>Enter database credentials for
+            <small>
+                <kbd>{{ database_module_choice }}</kbd>
+            </small>
+        </p>
+        {% endif %}
+        <form action="/set_database_module" method="POST">
+            <input type="hidden" id="db_backend" name="db_backend" value="SQLite">
+            <p>
+                <b>or</b>
+                switch to
+                <button class="secondary medium">SQLite</button>
+            </p>
+        </form>
+    </blockquote>
+    <form action="/set_database_credentials" method="POST">
+        <label for="username">Username</label>
+        <input type="text" name="username" id="username">
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password">
+        <br>
+        <button>Save</button>
+    </form>
+</main>
+
+{% endblock %}
