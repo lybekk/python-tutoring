@@ -4,9 +4,9 @@ from mymodules.config import Config
 
 
 class DatabaseSQLite:
-    def __init__(self):
+    def __init__(self, file_name):
         self.config = Config()
-        self.db_name = 'training.db'
+        self.db_name = file_name
         self.db_path = pathlib.Path(__file__).parent.absolute().parent.absolute().joinpath(self.db_name)
 
     def connection_test(self):

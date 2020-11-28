@@ -1,3 +1,7 @@
+"""
+Flask server demonstrating database interaction,
+data manipulation (CSV, JSON), HTML Templating, CSS, JavaScript, and then some.
+"""
 import csv
 import json
 from flask import Flask, render_template, request, jsonify, make_response, redirect
@@ -13,7 +17,7 @@ from mymodules.sqlite_module import DatabaseSQLite
 config = Config()
 
 db = {
-    "SQLite": DatabaseSQLite(),
+    "SQLite": DatabaseSQLite("training.db"),
     "MySQL": DatabaseMySQL(),
     # "SQLAlchemy": DatabaseSQLAlchemy(), # TODO: Not implemented yet
 }

@@ -7,6 +7,7 @@ students.json
 /jupyter_notebooks/.vscode/settings.json
 /mymodules/settings.py
 config.ini
+testing.db
 
 ### Python ###
 # Byte-compiled / optimized / DLL files
