@@ -65,9 +65,8 @@ Documentation
 
 Sphinx is used for generating documentation.
 
-These files are specific to Sphinx:
-
-* conf.py
-* index.rst
-* Makefile
-* make.bat
+To build docs:
+```shell
+cd docs
+make html
+```

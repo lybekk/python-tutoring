@@ -18,3 +18,18 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+
+
+Pack test
+=========
+
+.. automodule:: mymodules
+
+
+Documentation
+============
+
+The Flask documentation uses 'alabaster'.
+For a read the docs theme, use 'sphinx_rtd_theme'
+
+Theming documentation https://www.sphinx-doc.org/en/master/usage/theming.html
