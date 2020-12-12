@@ -4,6 +4,7 @@ import configparser
 
 class Config:
     def __init__(self):
+        """Configparser will, if config.ini does not exist, create a file with some default values"""
         self.config_parser = configparser.ConfigParser()
         self.config_file_path = pathlib.Path(__file__).parent.absolute().parent.absolute().joinpath("config.ini")
 
@@ -13,16 +14,19 @@ class Config:
             self.config_parser['DEFAULT'] = {
                 "database_module_choice": "SQLite",
             }
+            self.config_parser['SQLite'] = {}
             self.config_parser['MySQL'] = {
                 "host": "localhost",
                 "username": "",
                 "password": "",
             }
-            self.config_parser['SQLAlchemy'] = {}
+            self.config_parser['SQLAlchemy - SQLite'] = {}
+            self.config_parser['SQLAlchemy - MySQL'] = {}
             self.save()
 
     def get_user(self):
-        value = self.config_parser.get(self.db(), "user")
+        #value = self.config_parser.get(self.db(), "user")
+        value = self.config_parser.get(self.db(), "username")
         if value:
             return value
         else:

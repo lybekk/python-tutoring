@@ -3,6 +3,8 @@ from mymodules.config import Config
 
 
 class DatabaseMySQL:
+    """Instantiates a class object for interacting with a MySQL instance
+    """
     def __init__(self):
         self.config = Config()
 
@@ -102,11 +104,12 @@ class DatabaseMySQL:
     def get_all_students(self):
         """
         We are using a LEFT JOIN here, since we want all rows from "students",
-            and only connect/reference a city from the "cities" table.
-        A RIGHT JOIN woul return all cities, with referenced student cells,
-            filtering out students with no match in the "cities" table.
+        and only connect/reference a city from the "cities" table.
+        A RIGHT JOIN would return all cities, with referenced student cells,
+        filtering out students with no match in the "cities" table.
         An INNER JOIN would have only given us the rows where students AND cities found a match in both tables.
         A FULL OUTER JOIN does not work on this query.
+
         :return:
         """
         try:

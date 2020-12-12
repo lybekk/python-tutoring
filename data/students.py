@@ -45,7 +45,7 @@ sample_data_students = [
     },
     {
         "given_name": "Geralt",
-        "family_name": None,
+        "family_name": "Of Rivia",
         "date_birth": None,
         "notes": "Goes by the name 'Of Rivia', despite not being from there.",
         "nationality": "Polish",

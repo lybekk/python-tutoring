@@ -2,6 +2,7 @@
 Flask server demonstrating database interaction,
 data manipulation (CSV, JSON), HTML Templating, CSS, JavaScript, and then some.
 """
+
 import csv
 import json
 from flask import Flask, render_template, request, jsonify, make_response, redirect
@@ -12,14 +13,15 @@ from mymodules.config import Config
 
 from mymodules.mysql_module import DatabaseMySQL
 from mymodules.sqlite_module import DatabaseSQLite
-# from mymodules.sqlalchemy_module import DatabaseSQLAlchemy # TODO: Not implemented yet
+from mymodules.sqlalchemy_module import DatabaseSQLAlchemy
 
 config = Config()
 
 db = {
     "SQLite": DatabaseSQLite("training.db"),
     "MySQL": DatabaseMySQL(),
-    # "SQLAlchemy": DatabaseSQLAlchemy(), # TODO: Not implemented yet
+#    "SQLAlchemy - SQLite": DatabaseSQLAlchemy("SQLite"),
+#    "SQLAlchemy - MySQL": DatabaseSQLAlchemy("MySQL"),
 }
 
 app = Flask(__name__)
@@ -39,9 +41,10 @@ def reset():
 def index():
     """
     Note: The styling parameter takes any value for now and,
-        if present in the querystring,
-        renders the template without bootstrap.css, JQuery and bootstrap.js,
-        using style.css instead.
+    if present in the querystring,
+    renders the template without bootstrap.css, JQuery and bootstrap.js,
+    using style.css instead.
+
     :return:
     """
     result = db[config.db()].connection_test()

@@ -3,13 +3,11 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to Python tutoring's documentation!
-===========================================
-
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    :caption: Contents:
 
+.. include:: ../README.rst
 
 
 Indices and tables
@@ -19,17 +17,42 @@ Indices and tables
 * :ref:`modindex`
 * :ref:`search`
 
+Flask server
+=====================
+.. automodule:: server
+   :members:
 
-Pack test
+SQLite
 =========
+.. automodule:: mymodules.sqlite_module
+   :members:
 
-.. automodule:: mymodules
+MySQL
+=====
+.. automodule:: mymodules.mysql_module
+   :members:
 
-
-Documentation
+Package test
 ============
 
-The Flask documentation uses 'alabaster'.
+.. automodule:: mymodules
+   :members:
+
+Included modules:
+
+MySQL
+   :py:mod:`mymodules.mysql_module`
+SQLite
+   :py:mod:`mymodules.sqlite_module`
+
+Documentation
+=============
+
+The python-tutoring repository uses the 'classic',
+while Flask's official documentation uses 'alabaster'.
 For a read the docs theme, use 'sphinx_rtd_theme'
 
 Theming documentation https://www.sphinx-doc.org/en/master/usage/theming.html
+
+Sphinx documentation help:
+https://pythonhosted.org/an_example_pypi_project/sphinx.html

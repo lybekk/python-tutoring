@@ -4,18 +4,32 @@ from mymodules.config import Config
 
 
 class DatabaseSQLite:
+    """SQLite
+    """
     def __init__(self, file_name):
         self.config = Config()
         self.db_name = file_name
         self.db_path = pathlib.Path(__file__).parent.absolute().parent.absolute().joinpath(self.db_name)
 
     def connection_test(self):
+        """Tests the connection to the database file (usually training.db).
+        In this case, it checks if the .db file is available,
+        or if it doesn't exist, it will try to create it.
+
+        Returns:
+            dict: Returns a dictionary with a boolean retry key. If True, triggers a redirect in Flask
+        """
         return {
             "retry": not self.db_path.is_file(),
             "message": ""
         }
 
     def connect(self):
+        """
+        Connects to the database file (usually training.db),
+
+        :return:
+        """
         connection = sqlite3.connect(self.db_name)
         return connection
 

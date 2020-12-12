@@ -1,4 +1,5 @@
 Flask
 notebook
 mysql-connector-python
-SQLAlchemy
+sqlalchemy
+

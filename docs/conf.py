@@ -31,7 +31,7 @@ release = '1.1.0'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-"sphinx.ext.autodoc"
+    "sphinx.ext.autodoc"
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -48,6 +48,12 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 html_theme = 'classic'
+html_theme_options = {
+    "externalrefs": True, # Displays external links differently from internal links
+    "collapsiblesidebar": True,
+    "relbarbgcolor": "teal",
+    "bodyfont": "sans-serif",
+}
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,

@@ -17,6 +17,7 @@ First steps
 ===========
 
 Install required Python packages
+
 1. In your terminal, change path (:code:`cd`) to this project's directory
 2. Run :code:`pip install -r requirements.txt`
 
